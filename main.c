@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: mbraga-s <mbraga-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:53:01 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/07/24 11:41:47 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:36:44 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,6 @@ void	init_data(t_data *data, char *file)
 
 int	key_hook(int keycode, t_data *data)
 {
-	if (keycode == XK_a || keycode == XK_w || keycode == XK_s || \
-		keycode == XK_d)
-	{
-		draw_3dray(data, 0x00000000);
-		draw_player(data, 0x00000000);
-	}
 	if (keycode == XK_Escape)
 		end_game(data);
 	else if (keycode == XK_w)
