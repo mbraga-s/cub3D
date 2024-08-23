@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:35:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/23 19:00:31 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:57:34 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,19 @@ void	check_longer(t_data *data, int color, t_raydata *rd)
 	if ((total_h > total_v && fabs(total_v) > 0.0001) || fabs(total_h) < 0.0001)
 	{
 		ft_draw_line(data, data->px, data->py, rd->vx, rd->vy, color);
-		data->w3d_color = 0xFFFF0000;
+		if (rd->ra < P2 || rd->ra > P3)
+			data->w3d_color = 0xFFFF0000;
+		else
+			data->w3d_color = 0xFFFFFF00;
 		rd->dist = total_v;
 	}
 	else
 	{
 		ft_draw_line(data, data->px, data->py, rd->hx, rd->hy, color);
-		data->w3d_color = 0xFF0000FF;
+		if (rd->ra < PI)
+			data->w3d_color = 0xFF0000FF;
+		else
+			data->w3d_color = 0xFF00FFFF;
 		rd->dist = total_h;
 	}
 }
@@ -135,16 +141,16 @@ void	draw_3dray(t_data *data, int color)
 	float		ca; //fixing fish eye
 	int			i;
 
-	width = 7;
+	width = 4;
 	// incr = 0.0174533; //one degree in radians
-	incr = 0.001;
+	incr = 0.005;
 	rd.r = 0;
-	rd.ra = data->pa - (incr * 250);
+	rd.ra = data->pa - (incr * 50);
 	if (rd.ra < 0)
 		rd.ra += 2 * PI;
 	if (rd.ra > 2 * PI)
 		rd.ra -= 2 * PI;
-	while (rd.r < 500)
+	while (rd.r < 100)
 	{
 		i = 0;
 		rd.dof = 0;
@@ -162,10 +168,10 @@ void	draw_3dray(t_data *data, int color)
 		if (line_h > (512))
 			line_h = 512;
 		line_off = 256 - (line_h / 2);
-		while (i <= width)
+		while (i < width)
 		{
-			// ft_draw_line(data, rd.r * 8 + (64 * data->map_w) + i, line_off, rd.r * 8 + (64 * data->map_w) + i, line_h + line_off, data->w3d_color);
-			ft_draw_line(data, rd.r + (64 * data->map_w), line_off, rd.r + (64 * data->map_w), line_h + line_off, data->w3d_color);
+			ft_draw_line(data, rd.r * width + (64 * data->map_w) + i, line_off, rd.r * width + (64 * data->map_w) + i, line_h + line_off, data->w3d_color);
+			// ft_draw_line(data, rd.r + (64 * data->map_w), line_off, rd.r + (64 * data->map_w), line_h + line_off, data->w3d_color);
 			i++;
 		}
 		rd.ra += incr;
