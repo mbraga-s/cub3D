@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraga-s <mbraga-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 18:23:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/01 14:27:05 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/21 12:04:59 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int	draw_player(t_data *data, int color)
 
 	dx = (data->px - cos(data->pa) * 20) - data->px;
 	dy = (data->py - sin(data->pa) * 20) - data->py;
-
 	draw_pixel(data, data->px, data->py, color);
 	draw_square(data, data->px, data->py, color, 13);
 	ft_draw_line(data, data->px, data->py, data->px - cos(data->pa) * 20, \

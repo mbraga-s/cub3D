@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraga-s <mbraga-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:53:01 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/01 14:36:44 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:02:12 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	store_map(char *file, t_data *data)
 
 void	init_data(t_data *data, char *file)
 {
-	data->px = 128;
-	data->py = 128;
-	data->pa = PI / 2;
+	data->px = 135;
+	data->py = 135;
+	data->pa = PI;
 	data->pdx = cos(data->pa) * 5;
 	data->pdy = sin(data->pa) * 5;
 	data->p_color = 0xFFFFFF00;
@@ -89,8 +89,8 @@ int	key_hook(int keycode, t_data *data)
 	else
 		return (0);
 	draw_map(data);
-	draw_player(data, data->p_color);
 	draw_3dray(data, 0xFF00FF00);
+	draw_player(data, data->p_color);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
@@ -118,8 +118,8 @@ int	main(int argc, char **argv)
 	printf("\nMap height: %d\n", data.map_h);
 	printf("Map width: %d\n", data.map_w);
 	draw_map(&data);
-	draw_player(&data, data.p_color);
 	draw_3dray(&data, 0xFF00FF00);
+	draw_player(&data, data.p_color);
 	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 	mlx_hook(data.win, 17, 1, end_game, &data);
 	mlx_hook(data.win, 2, 1L, key_hook, &data);

@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:38:09 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/07/17 16:08:44 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/21 15:23:30 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 
 # ifndef PI
 #  define PI 3.14159
+#  define P2 PI/2
+#  define P3 3*PI/2
 # endif
 
 typedef struct s_data
@@ -51,6 +53,24 @@ typedef struct s_data
 	float	pdy;		//player delta y
 	float	pa;			//player angle
 }				t_data;
+
+typedef struct s_raydata
+{
+	int		r;	//number of rays
+	int		mx;
+	int		my;
+	int		mp;
+	int		dof; //depth of field
+	float	rx; //ray intersect with grid x coord
+	float	ry; //ray intersect with grid y coord
+	float	ra; //ray angle
+	float	xo; //x offset
+	float	yo; //y offset
+	float	vx; //ray intersect with grid x coord on vertical check
+	float	vy; //ray intersect with grid y coord on vertical check
+	float	hx; //ray intersect with grid x coord on horizontal check
+	float	hy; //ray intersect with grid y coord on horizontal check
+}				t_raydata;
 
 char	*ft_strdup(const char *s);
 
