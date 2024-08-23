@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:35:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/23 18:36:11 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:00:31 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@ void	check_longer(t_data *data, int color, t_raydata *rd)
 {
 	float	total_h;
 	float	total_v;
+	float	delta_x;
+	float	delta_y;
 
-	total_h = fabs(rd->hx - data->px) + fabs(rd->hy - data->py);
-	total_v = fabs(rd->vx - data->px) + fabs(rd->vy - data->py);
-	// printf("Tot H: %f\n", total_h);
-	// printf("Tot V: %f\n\n", total_v);
+	delta_x = (rd->hx - data->px) * (rd->hx - data->px);
+	delta_y = (rd->hy - data->py) * (rd->hy - data->py);
+	total_h = sqrt(delta_x + delta_y);
+	delta_x = (rd->vx - data->px) * (rd->vx - data->px);
+	delta_y = (rd->vy - data->py) * (rd->vy - data->py);
+	total_v = sqrt(delta_x + delta_y);
 	if ((total_h > total_v && fabs(total_v) > 0.0001) || fabs(total_h) < 0.0001)
 	{
 		ft_draw_line(data, data->px, data->py, rd->vx, rd->vy, color);
@@ -131,18 +135,18 @@ void	draw_3dray(t_data *data, int color)
 	float		ca; //fixing fish eye
 	int			i;
 
-	width = 3;
-	incr = 0.0174533; //one degree in radians
+	width = 7;
+	// incr = 0.0174533; //one degree in radians
+	incr = 0.001;
 	rd.r = 0;
-	rd.ra = data->pa - (incr * 5);
+	rd.ra = data->pa - (incr * 250);
 	if (rd.ra < 0)
 		rd.ra += 2 * PI;
 	if (rd.ra > 2 * PI)
 		rd.ra -= 2 * PI;
-	printf("NEW\n\n");
-	while (rd.r < 10)
+	while (rd.r < 500)
 	{
-		i = width;
+		i = 0;
 		rd.dof = 0;
 		check_hor(data, color, &rd);
 		rd.dof = 0;
@@ -153,17 +157,16 @@ void	draw_3dray(t_data *data, int color)
 			ca += 2 * PI;
 		if (ca > 2 * PI)
 			ca -= 2 * PI;
-		printf("cos: %f\n", cos(ca));
-		printf("rd: %f\n\n", rd.dist);
 		rd.dist = (rd.dist * cos(ca));
 		line_h = ((64 * 512) / rd.dist);
 		if (line_h > (512))
 			line_h = 512;
 		line_off = 256 - (line_h / 2);
-		while (i >= 0)
+		while (i <= width)
 		{
-			ft_draw_line(data, rd.r * 4 + (64 * data->map_w) + i, line_off, rd.r * 4 + (64 * data->map_w) + i, line_h + line_off, data->w3d_color);
-			i--;
+			// ft_draw_line(data, rd.r * 8 + (64 * data->map_w) + i, line_off, rd.r * 8 + (64 * data->map_w) + i, line_h + line_off, data->w3d_color);
+			ft_draw_line(data, rd.r + (64 * data->map_w), line_off, rd.r + (64 * data->map_w), line_h + line_off, data->w3d_color);
+			i++;
 		}
 		rd.ra += incr;
 		if (rd.ra < 0)
