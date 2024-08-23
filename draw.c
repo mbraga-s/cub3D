@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 18:23:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/21 12:04:59 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:38:55 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	draw_pixel(t_data *data, int x, int y, int color)
 {
 	if (x <= 0 || y <= 0)
 		return ;
-	else if (x >= (data->map_w * 64) || y >= (data->map_h * 64))
+	else if (x >= (data->map_w * 2 * 64) || y >= (data->map_h * 64))
 		return ;
 	else
 		my_mlx_pixel_put(data, x, y, color);
@@ -38,6 +38,12 @@ void	draw_map(t_data *data)
 				color = data->w_color;
 			else
 				color = 0XFF545454;
+			draw_square(data, (f * SQR_SIZE) + 31, (i * SQR_SIZE) + 31, color, SQR_SIZE);
+			f++;
+		}
+		while (f < (data->map_w * 2))
+		{
+			color = 0xFF000000;
 			draw_square(data, (f * SQR_SIZE) + 31, (i * SQR_SIZE) + 31, color, SQR_SIZE);
 			f++;
 		}

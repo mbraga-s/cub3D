@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:38:09 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/21 15:23:30 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:15:52 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_data
 	char	*addr;
 	int		p_color;	//player color
 	int		w_color;	//wall color
+	int		w3d_color;	//wall 3d color
 	int		bpp;		//bits per pixel
 	int		l_lgt;		//line length
 	int		endian;
@@ -70,6 +71,7 @@ typedef struct s_raydata
 	float	vy; //ray intersect with grid y coord on vertical check
 	float	hx; //ray intersect with grid x coord on horizontal check
 	float	hy; //ray intersect with grid y coord on horizontal check
+	float	dist; //final ray distance
 }				t_raydata;
 
 char	*ft_strdup(const char *s);

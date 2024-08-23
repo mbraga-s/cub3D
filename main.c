@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:53:01 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/23 16:02:12 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:16:16 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,18 @@ void	store_map(char *file, t_data *data)
 
 void	init_data(t_data *data, char *file)
 {
-	data->px = 135;
-	data->py = 135;
+	data->px = 100;
+	data->py = 100;
 	data->pa = PI;
 	data->pdx = cos(data->pa) * 5;
 	data->pdy = sin(data->pa) * 5;
 	data->p_color = 0xFFFFFF00;
 	data->w_color = 0xFFFFFFFF;
+	data->w3d_color = 0xFFFF0000;
 	store_map(file, data);
 	data->mlx = mlx_init();
-	data->win = mlx_new_window(data->mlx, data->map_w * 64, data->map_h * 64, "Tester");
-	data->img = mlx_new_image(data->mlx, data->map_w * 64, data->map_h * 64);
+	data->win = mlx_new_window(data->mlx, 1024, 512, "Tester");
+	data->img = mlx_new_image(data->mlx, 1024, 512);
 	data->addr = mlx_get_data_addr(data->img, &data->bpp, &data->l_lgt, &data->endian);
 }
 

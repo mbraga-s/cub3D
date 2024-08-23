@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:35:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/23 16:01:35 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:36:11 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,17 @@ void	check_longer(t_data *data, int color, t_raydata *rd)
 	// printf("Tot H: %f\n", total_h);
 	// printf("Tot V: %f\n\n", total_v);
 	if ((total_h > total_v && fabs(total_v) > 0.0001) || fabs(total_h) < 0.0001)
+	{
 		ft_draw_line(data, data->px, data->py, rd->vx, rd->vy, color);
+		data->w3d_color = 0xFFFF0000;
+		rd->dist = total_v;
+	}
 	else
+	{
 		ft_draw_line(data, data->px, data->py, rd->hx, rd->hy, color);
+		data->w3d_color = 0xFF0000FF;
+		rd->dist = total_h;
+	}
 }
 
 void	depth_field(t_data *data, int color, t_raydata *rd, int flag)
@@ -117,21 +125,46 @@ void	draw_3dray(t_data *data, int color)
 {
 	t_raydata	rd;
 	float		incr;
+	float		line_h;
+	float		line_off;
+	int			width;
+	float		ca; //fixing fish eye
+	int			i;
 
+	width = 3;
 	incr = 0.0174533; //one degree in radians
 	rd.r = 0;
-	rd.ra = data->pa - (incr * 360);
+	rd.ra = data->pa - (incr * 5);
 	if (rd.ra < 0)
 		rd.ra += 2 * PI;
 	if (rd.ra > 2 * PI)
 		rd.ra -= 2 * PI;
-	while (rd.r < 360)
+	printf("NEW\n\n");
+	while (rd.r < 10)
 	{
+		i = width;
 		rd.dof = 0;
 		check_hor(data, color, &rd);
 		rd.dof = 0;
 		check_ver(data, color, &rd);
 		check_longer(data, color, &rd);
+		ca = data->pa - rd.ra;
+		if (ca < 0)
+			ca += 2 * PI;
+		if (ca > 2 * PI)
+			ca -= 2 * PI;
+		printf("cos: %f\n", cos(ca));
+		printf("rd: %f\n\n", rd.dist);
+		rd.dist = (rd.dist * cos(ca));
+		line_h = ((64 * 512) / rd.dist);
+		if (line_h > (512))
+			line_h = 512;
+		line_off = 256 - (line_h / 2);
+		while (i >= 0)
+		{
+			ft_draw_line(data, rd.r * 4 + (64 * data->map_w) + i, line_off, rd.r * 4 + (64 * data->map_w) + i, line_h + line_off, data->w3d_color);
+			i--;
+		}
 		rd.ra += incr;
 		if (rd.ra < 0)
 			rd.ra += 2 * PI;
