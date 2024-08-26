@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:35:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/23 19:57:34 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:09:32 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	depth_field(t_data *data, int color, t_raydata *rd, int flag)
 		rd->mx = abs((int)rd->rx / 64);
 		rd->my = abs((int)rd->ry / 64);
 		rd->mp = rd->my * data->map_w + rd->mx;
-		if (rd->mp < data->map_w * data->map_h && data->map[rd->my][rd->mx] == 'X')
+		if (rd->mp < data->map_w * data->map_h && data->map[rd->my][rd->mx] == '1')
 			rd->dof = 8;
 		else
 		{
@@ -141,16 +141,16 @@ void	draw_3dray(t_data *data, int color)
 	float		ca; //fixing fish eye
 	int			i;
 
-	width = 4;
-	// incr = 0.0174533; //one degree in radians
-	incr = 0.005;
+	width = 8;
+	incr = 0.0174533; //one degree in radians
+	// incr = 0.005;
 	rd.r = 0;
-	rd.ra = data->pa - (incr * 50);
+	rd.ra = data->pa - (incr * 30);
 	if (rd.ra < 0)
 		rd.ra += 2 * PI;
 	if (rd.ra > 2 * PI)
 		rd.ra -= 2 * PI;
-	while (rd.r < 100)
+	while (rd.r < 60)
 	{
 		i = 0;
 		rd.dof = 0;

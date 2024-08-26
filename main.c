@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:53:01 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/23 18:16:16 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:03:49 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ void	init_data(t_data *data, char *file)
 
 int	key_hook(int keycode, t_data *data)
 {
+	float tempa;
+	float tempx;
+	float tempy;
+
 	if (keycode == XK_Escape)
 		end_game(data);
 	else if (keycode == XK_w)
@@ -66,7 +70,7 @@ int	key_hook(int keycode, t_data *data)
 		data->px -= data->pdx;
 		data->py -= data->pdy;
 	}
-	else if (keycode == XK_a)
+	else if (keycode == XK_Left)
 	{
 		data->pa -= 0.05;
 		if (data->pa < 0)
@@ -79,13 +83,33 @@ int	key_hook(int keycode, t_data *data)
 		data->px += data->pdx;
 		data->py += data->pdy;
 	}
-	else if (keycode == XK_d)
+	else if (keycode == XK_Right)
 	{
 		data->pa += 0.05;
 		if (data->pa > 2 * PI)
 			data->pa -= 2 * PI;
 		data->pdx = cos(data->pa) * 5;
 		data->pdy = sin(data->pa) * 5;
+	}
+	else if (keycode == XK_a)
+	{
+		tempa = data->pa + (PI / 2);
+		if (tempa > 2 * PI)
+			tempa -= 2 * PI;
+		tempx = cos(tempa) * 5;
+		tempy = sin(tempa) * 5;
+		data->px += tempx;
+		data->py += tempy;
+	}
+	else if (keycode == XK_d)
+	{
+		tempa = data->pa + (PI / 2);
+		if (data->pa > 2 * PI)
+			data->pa -= 2 * PI;
+		tempx = cos(tempa) * 5;
+		tempy = sin(tempa) * 5;
+		data->px -= tempx;
+		data->py -= tempy;
 	}
 	else
 		return (0);

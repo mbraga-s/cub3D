@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:38:09 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/23 18:15:52 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:07:43 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ typedef struct s_data
 	int		bpp;		//bits per pixel
 	int		l_lgt;		//line length
 	int		endian;
-	int		map_h;
-	int		map_w;
+	int		map_h;		// map height
+	int		map_w;		// map width
+	int		map_s;		// map size
 	float	px;			//player x coord
 	float	py;			//player y coord
 	float	pdx;		//player delta x
@@ -87,6 +88,8 @@ void	draw_map(t_data *data);
 int		draw_player(t_data *data, int color);
 
 void	ft_draw_line(t_data *data, int x1, int y1, int x2, int y2, int color);
+
+int		draw_bdsqr(t_data *data, int x, int y, int color, int size);
 
 int		draw_square(t_data *data, int x, int y, int color, int size);
 
