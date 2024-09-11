@@ -1,43 +1,68 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: manumart <manumart@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/08/12 15:38:55 by manumart          #+#    #+#              #
+#    Updated: 2024/09/08 18:50:29 by manumart         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-NAME = trace
 
-SRCS = main utils1 draw caster\
-		./getnextline/get_next_line ./getnextline/get_next_line_utils \
-		./libft/ft_strdup ./libft/ft_memcpy \
+#$(VERBOSE).SILENT:
+
+NAME =cub3D
+
+SRCS_NAME =	main.c  get_next_line.c get_next_line_utils.c parse.c textures.c \
+			 free.c colors.c map.c player.c floodfill.c draw.c caster.c caster_utils.c movement.c init.c\
 
 CC = cc
-CCFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra  -g
 
-MILIB = -I /usr/X11/include -g -L /usr/X11/lib -l minilibx -framework OpenGL -framework AppKit
+RM = rm -rf
 
-MLX_LIB_DIR = minilibx-linux/
-MLX_INCLUDE = -I minilibx-linux/
+SRC_PATH = ./
 
-INC = -Iincludes -I/usr/include -Imlx_linux
+OBJ_PATH = ./objects
 
-LMLX_FLAGS = -L$(MLX_LIB_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz -fPIC
+LIBFT = ./libft/libft.a
+LIBFT_PATH = ./libft
 
+OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS_NAME:.c=.o))
+
+SRC = $(addprefix $(SRC_PATH)/, $(SRCS_NAME))
 
 all: $(NAME)
 
-$(NAME): $(SRCS:=.o)
-	make -s -C minilibx-linux/
-	$(CC) $(CCFLAGS) $(SRCS:=.o) $(INC) $(LMLX_FLAGS) $(MLX_INCLUDE) -o $(NAME)
-	@echo "\e[0;32m Project \e[1;36m$(NAME)\e[0;32m compiled successfully\e[0m"
+$(NAME) : $(LIBFT) $(OBJS)
+		@echo "\e[0;32m Project \e[1;36m$(NAME)\e[0;32m compiled successfully\e[0m"
+		$(CC) $(OBJS) -o $(NAME) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz 
+
+$(OBJ_PATH)/%.o : $(SRC_PATH)/%.c 
+		mkdir -p objects
+		$(CC)	-c $< -o $@
+
+$(LIBFT):  
+	make -s -C $(LIBFT_PATH)
 
 clean:
-	rm -fr $(SRCS:=.o)
-#	make clean -s -C minilibx-linux/
-	@echo "\e[0;31m Removed object files.\e[0m"
+		make clean -s -C $(LIBFT_PATH)
+		@echo "\e[0;31m Removed object files.\e[0m"
+		rm -rf $(OBJS)
 
 fclean: clean
-	rm -fr $(NAME)
-	@echo "\e[0;31m Removed executable \e[1;36m$(NAME)\e[0;31m.\e[0m"
+		make fclean -s -C $(LIBFT_PATH)
+		rmdir objects
+		@echo "\e[0;31m Removed executable \e[1;36m$(NAME)\e[0;31m.\e[0m"
+		rm -rf $(NAME)
 
-re: fclean $(NAME)
+re: fclean $(LIBFT) all
 
-rec: re
-	make -s clean
-	clear
+.PHONY: all clean fclean re
 
-.PHONY: all clean fclean re rec
+# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./cub3D
+
+
+

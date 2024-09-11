@@ -1,0 +1,218 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/26 16:09:28 by manumart          #+#    #+#             */
+/*   Updated: 2024/09/10 20:10:33 by mbraga-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef CUB3D_H
+# define CUB3D_H
+
+# include "./mlx_linux/mlx.h"
+# include "libft/libft.h"
+# include "mlx_linux/mlx.h"
+# include <X11/X.h>
+# include <X11/keysym.h>
+# include <fcntl.h>
+# include <math.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+
+# ifndef PI
+#  define PI 3.14159
+#  define P2 PI / 2
+#  define P3 3 * PI / 2
+# endif
+# define BUFFER_SIZE 42
+
+
+// typedef struct s_raydata
+// {
+// 	double	posx;
+// 	double	posy;
+// 	double	dirx;
+// 	double	diry;
+// 	double	planex;
+// 	double	planey;
+// 	double 	time;
+// 	double 	oldtime;
+// }					t_raydata;
+
+typedef struct s_img
+{
+	void			*img;
+	char			*addr;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
+	int				width;
+	int				height;
+}					t_img;
+
+//  			color;       // current color (usefull while testing)
+// 					mm_w3dcolor; // raycast line color (former w_color)
+// 					mm_wcolor;   // minimap wall color (former w_color)
+typedef struct s_color
+{
+	int				r;
+	int				g;
+	int				b;
+	int				color;
+	int				mm_w3dcolor;
+	int				mm_wcolor;
+}					t_color;
+
+typedef struct s_floornceiling
+{
+	int				width;
+	int				height;
+	t_color			color;
+
+}					t_floornceiling;
+
+typedef struct s_map
+{
+	t_floornceiling	floor;
+	t_floornceiling	ceiling;
+	char			**map;
+	char			*n_texture;
+	char			*s_texture;
+	char			*w_texture;
+	char			*e_texture;
+}					t_map;
+
+typedef struct s_textures
+{
+	t_img			no;
+	t_img			so;
+	t_img			we;
+	t_img			ea;
+
+}					t_textures;
+
+//  			bpp;    // mlx bits per pixel
+//  			l_lgt;  // mlx line length
+//  			*addr; // mlx img address
+typedef struct s_strmlx
+{
+	void			*mlx;
+	void			*win;
+	void			*img;
+	int				bpp;
+	int				l_lgt;
+	char			*addr;
+	int				endian;
+}					t_strmlx;
+
+// float 		px;    // player x coord
+// 	float 		py;    // player y coord
+// 	float 		pdx;   // player delta x
+// 	float 		pdy;   // player delta y
+// 	float 		pa;    // player angle
+// 	int 		p_color; // player color (only relevant for minimap)
+typedef struct s_player
+{
+	float			px;
+	float			py;
+	float			pa;
+
+}					t_player;
+
+//  t_strmlx 		smlx; // smlx porque há o *mlx na strmlx
+//  int 			size; // tile size (usually 64x64 pixels)
+//  int 			wn_w; // window width
+// 	int 			wn_h; // window width
+typedef struct s_cub3d
+{
+	t_map			map;
+	t_strmlx		smlx;
+	t_textures		textures;
+	t_player		player;
+	t_color			colors;
+	int				height;
+	int				width;
+	int				size;
+	double			move_speed;
+	double			rot_spd;
+	double 			dirx;
+	double 			diry;
+	double 			planex;
+	double 			planey;
+	int				wn_w;
+	int				wn_h;
+}					t_cub3d;
+
+char				*get_next_line(int fd);
+
+char				*ft_strjoin_gnl(char *str1, char *str2);
+
+int					stashfree(char *buff);
+
+int					separate_values(int file, t_cub3d *cub3d);
+
+void				free_array(char **str);
+
+void				free_str(char *str);
+
+int					textures(int fd, t_cub3d *cub3d);
+
+int					trytofindtextures(int fd, t_cub3d *cub3d);
+
+void				exit_error(char *str);
+
+int					colors(int fd, t_cub3d *cub3d);
+
+int					trytofindcolors(char *line, t_cub3d *cub3d);
+
+int					parse(char *file, t_cub3d *cub3d);
+
+void				free_textures(t_cub3d *cub3d);
+
+int					map_free(char **maparray);
+
+int					ft_get_map(int fd, t_cub3d *cub3d);
+
+int					ft_parse_map(t_cub3d *cub3d);
+
+int					ft_mapmain(int fd, t_cub3d *cub3d);
+
+///////////////////////////////////////////////////////////////
+
+int					key_hook(int keycode, t_cub3d *cub3d);
+
+void				put_pixel(t_cub3d *cub3d, int x, int y, int color);
+
+void				draw_map(t_cub3d *cub3d);
+
+int					draw_player(t_cub3d *cub3d, int color, int scale);
+
+void				ft_draw_vline(t_cub3d *cub3d, int x, int y1, int y2);
+
+int					draw_square(t_cub3d *cub3d, int x, int y, int color,
+						int size);
+
+void				raycasting(t_cub3d *cub3d);
+
+int					end_game(t_cub3d *cub3d);
+
+int					draw_area(t_cub3d *cub3d, int x1, int y1, int x2, int y2);
+
+void				limit_angle(float *angle);
+
+int					get_player(t_cub3d *cub3d);
+
+int					lookforplayer(t_cub3d *cub3d, int i, int j);
+int					mainfloodfill(t_cub3d *cub3d);
+char				**map_copy(t_cub3d *cub3d);
+
+int					flood_fill(t_cub3d *cub3d, int x, int y, char **temp);
+
+void				nullcub3d(t_cub3d *cub3d);
+
+#endif

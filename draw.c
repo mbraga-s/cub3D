@@ -6,100 +6,96 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 18:23:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/08/26 15:50:22 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 22:32:14 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "trace.h"
+#include "cub3d.h"
 
-void	draw_pixel(t_data *data, int x, int y, int color)
+// Calculates the memory offset using the line length set by mlx
+// and places a colored pixel at the given coords
+void	put_pixel(t_cub3d *cub3d, int x, int y, int color)
 {
-	if (x <= 0 || y <= 0)
+	char	*dst;
+
+	if (x <= 0 || y <= 0 || x >= (cub3d->wn_w) || y >= cub3d->wn_h)
 		return ;
-	else if (x >= (data->map_w * 2 * 64) || y >= (data->map_h * 64))
-		return ;
-	else
-		my_mlx_pixel_put(data, x, y, color);
+	dst = cub3d->smlx.addr + (y * cub3d->smlx.l_lgt + x * (cub3d->smlx.bpp
+				/ 8));
+	*(unsigned int *)dst = color;
 }
 
-void	draw_map(t_data *data)
+void	draw_map(t_cub3d *cub3d)
 {
 	int	i;
 	int	f;
 	int	color;
+	int	scale;
 
 	i = 0;
-	while (i < (data->map_h))
+	if ((cub3d->wn_w / cub3d->width) < (cub3d->wn_h / cub3d->height))
+		scale = cub3d->wn_w / cub3d->width / 4;
+	else
+		scale = cub3d->wn_h / cub3d->height / 4;
+	while (i < (cub3d->height))
 	{
 		f = 0;
-		while (f < (data->map_w))
+		while (f < (cub3d->width))
 		{
-			if (data->map[i][f] == '1')
-				color = data->w_color;
+			if (cub3d->map.map[i][f] == '1')
+				color = 0x000f0f0f;
 			else
-				color = 0XFF545454;
-			draw_bdsqr(data, (f * SQR_SIZE) + 31, (i * SQR_SIZE) + 31, color, SQR_SIZE);
-			f++;
-		}
-		while (f < (data->map_w * 2))
-		{
-			color = 0XFF606060;
-			draw_square(data, (f * SQR_SIZE) + 31, (i * SQR_SIZE) + 31, color, SQR_SIZE);
+				color = 0xff44f044;
+			draw_square(cub3d, (f * scale) + (scale / 2 + 1), (i
+					* scale) + (scale / 2 + 1), color, scale);
 			f++;
 		}
 		i++;
 	}
+	draw_square(cub3d, cub3d->player.px * scale, cub3d->player.py * scale, 0xFFFFFF00, scale - 2);
 }
 
-void	ft_draw_line(t_data *data, int x1, int y1, int x2, int y2, int color)
+// Draws a line between the two given points (x1, y1) and (x2, y2).
+void	ft_draw_vline(t_cub3d *cub3d, int x, int y1, int y2)
 {
-	double	pixels;
-	double	x;
-	double	y;
-	double	delta_x;
-	double	delta_y;
+	int	lesser;
+	int	greater;
 
-	delta_x = x2 - x1;
-	delta_y = y2 - y1;
-	pixels = sqrt((delta_x * delta_x) + (delta_y * delta_y));
-	delta_x = delta_x / pixels;
-	delta_y = delta_y / pixels;
-	x = x1;
-	y = y1;
-	while (pixels > 0)
+	if (y1 < y2)
 	{
-		draw_pixel(data, x, y, color);
-		x += delta_x;
-		y += delta_y;
-		pixels--;
-	}
-}
-
-int	draw_player(t_data *data, int color)
-{
-	int	dx;
-	int	dy;
-
-	dx = (data->px - cos(data->pa) * 20) - data->px;
-	dy = (data->py - sin(data->pa) * 20) - data->py;
-	draw_pixel(data, data->px, data->py, color);
-	draw_bdsqr(data, data->px, data->py, color, 13);
-	ft_draw_line(data, data->px, data->py, data->px - cos(data->pa) * 20, \
-		data->py - sin(data->pa) * 20, color);
-	if (abs(dx) < abs(dy))
-	{
-		ft_draw_line(data, data->px + 1, data->py, data->px + 1 - cos(data->pa) * 20, data->py - sin(data->pa) * 20, color);
-		ft_draw_line(data, data->px - 1, data->py, data->px - 1 - cos(data->pa) * 20, data->py - sin(data->pa) * 20, color);
+		lesser = y1;
+		greater = y2;
 	}
 	else
 	{
-		ft_draw_line(data, data->px, data->py + 1, data->px - cos(data->pa) * 20, data->py + 1 - sin(data->pa) * 20, color);
-		ft_draw_line(data, data->px, data->py - 1, data->px - cos(data->pa) * 20, data->py - 1 - sin(data->pa) * 20, color);
+		lesser = y2;
+		greater = y1;
 	}
-	return (0);
+	while (lesser <= greater)
+	{
+		put_pixel(cub3d, x, lesser, cub3d->colors.mm_w3dcolor);
+		lesser++;
+	}
 }
 
-int	draw_square(t_data *data, int x, int y, int color, int size)
+// Draws a square with a little line indicating it's "direction" (in 2D)
+int	draw_player(t_cub3d *cub3d, int color, int scale)
+{
+	int	dx;
+	int	dy;
+	int	l_length;
+	int	l_thick;
+
+	l_length = ((scale * 30) / cub3d->size);
+	l_thick = scale * 2 / cub3d->size;
+	dx = (cub3d->player.px - cos(cub3d->player.pa) * l_length)
+		- cub3d->player.px;
+	dy = (cub3d->player.py - sin(cub3d->player.pa) * l_length)
+		- cub3d->player.py;
+	draw_square(cub3d, cub3d->player.px, cub3d->player.py, color, scale);
+}
+
+int	draw_square(t_cub3d *cub3d, int x, int y, int color, int size)
 {
 	int	xinc;
 	int	yinc;
@@ -119,39 +115,7 @@ int	draw_square(t_data *data, int x, int y, int color, int size)
 		xinc = 0;
 		while (xinc < size)
 		{
-			draw_pixel(data, xstart + xinc, ystart + yinc, color);
-			xinc++;
-		}
-		yinc++;
-	}
-	return (0);
-}
-
-//Draws a square with a grey border. Temp function to make the 2D map tiles
-int	draw_bdsqr(t_data *data, int x, int y, int color, int size)
-{
-	int	xinc;
-	int	yinc;
-	int	xstart;
-	int	ystart;
-
-	yinc = 0;
-	xstart = x - (size / 2);
-	ystart = y - (size / 2);
-	if ((size % 2) == 0)
-	{
-		xstart--;
-		ystart--;
-	}
-	while (yinc < size)
-	{
-		xinc = 0;
-		while (xinc < size)
-		{
-			if (xinc == 0 || xinc + 1 == size || yinc == 0 || yinc + 1 == size)
-				draw_pixel(data, xstart + xinc, ystart + yinc, 0x000000);
-			else
-				draw_pixel(data, xstart + xinc, ystart + yinc, color);
+			put_pixel(cub3d, xstart + xinc, ystart + yinc, color);
 			xinc++;
 		}
 		yinc++;
