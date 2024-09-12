@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 21:48:37 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/11 16:24:25 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 20:06:45 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,26 @@ int	lookforplr(t_cub3d *cub3d, int i, int j)
 {
 	char	*plr;
 	char	*plr_chars;
+	double	player;
 
 	plr_chars = "WNES";
 	plr = ft_strchr(plr_chars, cub3d->map.map[i][j]);
 	if (!plr)
 		return (1);
-	cub3d->plr.pa = (plr - plr_chars) * (PI / 2);
-	cub3d->plr.px = i * cub3d->size;
-	cub3d->plr.py = j * cub3d->size;
+	if ((plr - plr_chars) == 0)
+		cub3d->plr.dirx = -1;
+	else if ((plr - plr_chars) == 1)
+		cub3d->plr.diry = -1;
+	else if ((plr - plr_chars) == 2)
+	{
+		printf("EAST\n");
+		cub3d->plr.dirx = 1;
+	}
+	else if ((plr - plr_chars) == 3)
+		cub3d->plr.diry = 1;
+	cub3d->plr.px = i + 0.5;
+	cub3d->plr.py = j + 0.5;
 	printf("Player found at %d, %d\n", i, j);
-	printf("Player angle: %f\n", cub3d->plr.pa);
 	return (0);
 }
 

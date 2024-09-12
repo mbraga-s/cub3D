@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:09:28 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/12 18:06:21 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 19:50:00 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ typedef struct s_player
 	double			planey;
 	double			mv_spd;
 	double			rot_spd;
-	float			pa;
 
 }					t_player;
 
@@ -136,14 +135,13 @@ typedef struct s_player
 typedef struct s_cub3d
 {
 	t_map			map;
+	t_img			scrn;
 	t_player		plr;
 	t_color			colors;
 	void			*mlx;
 	void			*win;
-	t_img			scrn;
 	int				height;
 	int				width;
-	int				size;
 	int				wn_w;
 	int				wn_h;
 }					t_cub3d;
@@ -189,8 +187,6 @@ int					key_hook(int keycode, t_cub3d *cub3d);
 void				put_pixel(t_cub3d *cub3d, int x, int y, int color);
 
 void				draw_map(t_cub3d *cub3d);
-
-int					draw_plr(t_cub3d *cub3d, int color, int scale);
 
 void				ft_draw_vline(t_cub3d *cub3d, int x, int y1, int y2);
 

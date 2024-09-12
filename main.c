@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:58:33 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/12 15:42:58 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 20:08:50 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 
 void	load_txts(t_cub3d *cub3d, t_map *map)
 {
-	map->no.img = mlx_xpm_file_to_image(cub3d->mlx, map->n_texture,\
+	map->no.img = mlx_xpm_file_to_image(cub3d->mlx, map->n_texture, \
 		&map->no.width, &map->no.height);
-	if(!map->no.img)
+	if (!map->no.img)
 		exit_error("Error loading NO textures.");
-	map->no.addr = mlx_get_data_addr(map->no.img, &map->no.bpp,\
+	map->no.addr = mlx_get_data_addr(map->no.img, &map->no.bpp, \
 			&map->no.l_lgt, &map->no.endian);
-	map->so.img = mlx_xpm_file_to_image(cub3d->mlx, map->s_texture,\
+	map->so.img = mlx_xpm_file_to_image(cub3d->mlx, map->s_texture, \
 		&map->so.width, &map->so.height);
-	if(!map->so.img)
+	if (!map->so.img)
 		exit_error("Error loading SO textures.");
-	map->so.addr = mlx_get_data_addr(map->so.img, &map->so.bpp,\
+	map->so.addr = mlx_get_data_addr(map->so.img, &map->so.bpp, \
 			&map->so.l_lgt, &map->so.endian);
-	map->we.img = mlx_xpm_file_to_image(cub3d->mlx, map->w_texture,\
+	map->we.img = mlx_xpm_file_to_image(cub3d->mlx, map->w_texture, \
 		&map->we.width, &map->we.height);
-	if(!map->we.img)
+	if (!map->we.img)
 		exit_error("Error loading WE textures.");
-	map->we.addr = mlx_get_data_addr(map->we.img, &map->we.bpp,\
+	map->we.addr = mlx_get_data_addr(map->we.img, &map->we.bpp, \
 			&map->we.l_lgt, &map->we.endian);
-	map->ea.img = mlx_xpm_file_to_image(cub3d->mlx, map->e_texture,\
+	map->ea.img = mlx_xpm_file_to_image(cub3d->mlx, map->e_texture, \
 		&map->ea.width, &map->ea.height);
-	if(!map->ea.img)
+	if (!map->ea.img)
 		exit_error("Error loading EA textures.");
-	map->ea.addr = mlx_get_data_addr(map->ea.img, &map->ea.bpp,\
+	map->ea.addr = mlx_get_data_addr(map->ea.img, &map->ea.bpp, \
 			&map->ea.l_lgt, &map->ea.endian);
 }
 
@@ -48,25 +48,23 @@ void	init_cub3d(t_cub3d *cub3d)
 	cub3d->wn_h = 768;
 	cub3d->plr.rot_spd = 0.1;
 	cub3d->plr.mv_spd = 0.25;
-	cub3d->plr.dirx = 1;
-	cub3d->plr.diry = 0;
-	cub3d->plr.planex = 0;
-	cub3d->plr.planey = 0.66;
+	cub3d->plr.planex = -cub3d->plr.diry * tan(33 * PI / 180);
+	cub3d->plr.planey = cub3d->plr.dirx * tan(33 * PI / 180);
 	cub3d->mlx = mlx_init();
-	if(!cub3d->mlx)
+	if (!cub3d->mlx)
 		exit_error("Error loading mlx.\n");
 	else
 	{
-		cub3d->win = mlx_new_window(cub3d->mlx, cub3d->wn_w, cub3d->wn_h,\
+		cub3d->win = mlx_new_window(cub3d->mlx, cub3d->wn_w, cub3d->wn_h, \
 			"cub3D");
-		if(!cub3d->win)
+		if (!cub3d->win)
 			exit_error("Error loading mlx.\n");
 		cub3d->scrn.img = mlx_new_image(cub3d->mlx, cub3d->wn_w, cub3d->wn_h);
-		if(!cub3d->scrn.img)
+		if (!cub3d->scrn.img)
 			exit_error("Error loading mlx.\n");
 		else
-			cub3d->scrn.addr = mlx_get_data_addr(cub3d->scrn.img, &cub3d->scrn.bpp,\
-				&cub3d->scrn.l_lgt, &cub3d->scrn.endian);
+			cub3d->scrn.addr = mlx_get_data_addr(cub3d->scrn.img, \
+				&cub3d->scrn.bpp, &cub3d->scrn.l_lgt, &cub3d->scrn.endian);
 	}
 	load_txts(cub3d, &cub3d->map);
 }
@@ -86,19 +84,11 @@ int	main(int argc, char **argv)
 	}
 	if (parse(argv[1], &cub3d))
 		exit_error("parser error");
-	// end_game(&cub3d);
 	init_cub3d(&cub3d);
-	// printf("Ratio width: %d\n", cub3d.wn_w / cub3d.width);
-	// printf("Ratio height: %d\n", cub3d.wn_h / cub3d.height);
-	// while (i < cub3d.height)
-	// {
-	// 	printf("%s\n", cub3d.map.map[i]);
-	// 	i++;
-	// }
 	draw_area(&cub3d, 0, 0, cub3d.wn_w, cub3d.wn_h);
 	raycasting(&cub3d);
 	draw_map(&cub3d);
-	mlx_put_image_to_window(cub3d.mlx, cub3d.win, cub3d.scrn.img, 0,
+	mlx_put_image_to_window(cub3d.mlx, cub3d.win, cub3d.scrn.img, 0, \
 		0);
 	mlx_hook(cub3d.win, 17, 1, end_game, &cub3d);
 	mlx_hook(cub3d.win, 2, 1L, key_hook, &cub3d);

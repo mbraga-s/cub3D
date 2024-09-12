@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:47:32 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/10 15:59:32 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 20:05:23 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	nullcub3d(t_cub3d *cub3d)
 {
 	cub3d->map.map = NULL;
-	cub3d->size = 1;
 	cub3d->map.floor.color.color = -1;
 	cub3d->map.ceiling.color.color = -1;
 	cub3d->map.floor.color.r = -1;
@@ -28,4 +27,6 @@ void	nullcub3d(t_cub3d *cub3d)
 	cub3d->map.s_texture = NULL;
 	cub3d->map.w_texture = NULL;
 	cub3d->map.e_texture = NULL;
+	cub3d->plr.dirx = 0;
+	cub3d->plr.diry = 0;
 }
