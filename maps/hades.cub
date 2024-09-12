@@ -1,8 +1,8 @@
 
-NO textures/retro/a.xpm
-SO textures/retro/b.xpm
-WE textures/retro/c.xpm
-EA textures/retro/d.xpm
+NO ./textures_xpm/artpano.XPM
+SO ./textures_xpm/artpano3.XPM
+WE ./textures_xpm/redbrick.xpm
+EA ./textures_xpm/door_rust.xpm
 
 F 173,190,209
 C 166,166,166

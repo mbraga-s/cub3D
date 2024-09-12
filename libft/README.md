@@ -59,7 +59,7 @@ Makefile includes rules to add bonus and a .Phony to prevent issues in case ther
 
 `ft_atoi` - convert a string to an integer.
 
-`ft_calloc `- allocates memory for an array. The memory is set to zero.
+`ft_calloc `- allocates memory for an array The memory is set to zero.
 
 ### Extra functions
 

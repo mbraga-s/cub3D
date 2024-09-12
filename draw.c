@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 18:23:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/10 22:32:14 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/11 16:23:28 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	put_pixel(t_cub3d *cub3d, int x, int y, int color)
 
 	if (x <= 0 || y <= 0 || x >= (cub3d->wn_w) || y >= cub3d->wn_h)
 		return ;
-	dst = cub3d->smlx.addr + (y * cub3d->smlx.l_lgt + x * (cub3d->smlx.bpp
+	dst = cub3d->scrn.addr + (y * cub3d->scrn.l_lgt + x * (cub3d->scrn.bpp
 				/ 8));
 	*(unsigned int *)dst = color;
 }
@@ -52,7 +52,7 @@ void	draw_map(t_cub3d *cub3d)
 		}
 		i++;
 	}
-	draw_square(cub3d, cub3d->player.px * scale, cub3d->player.py * scale, 0xFFFFFF00, scale - 2);
+	draw_square(cub3d, cub3d->plr.px * scale, cub3d->plr.py * scale, 0xFFFFFF00, scale - 2);
 }
 
 // Draws a line between the two given points (x1, y1) and (x2, y2).
@@ -79,7 +79,7 @@ void	ft_draw_vline(t_cub3d *cub3d, int x, int y1, int y2)
 }
 
 // Draws a square with a little line indicating it's "direction" (in 2D)
-int	draw_player(t_cub3d *cub3d, int color, int scale)
+int	draw_plr(t_cub3d *cub3d, int color, int scale)
 {
 	int	dx;
 	int	dy;
@@ -88,11 +88,11 @@ int	draw_player(t_cub3d *cub3d, int color, int scale)
 
 	l_length = ((scale * 30) / cub3d->size);
 	l_thick = scale * 2 / cub3d->size;
-	dx = (cub3d->player.px - cos(cub3d->player.pa) * l_length)
-		- cub3d->player.px;
-	dy = (cub3d->player.py - sin(cub3d->player.pa) * l_length)
-		- cub3d->player.py;
-	draw_square(cub3d, cub3d->player.px, cub3d->player.py, color, scale);
+	dx = (cub3d->plr.px - cos(cub3d->plr.pa) * l_length)
+		- cub3d->plr.px;
+	dy = (cub3d->plr.py - sin(cub3d->plr.pa) * l_length)
+		- cub3d->plr.py;
+	draw_square(cub3d, cub3d->plr.px, cub3d->plr.py, color, scale);
 }
 
 int	draw_square(t_cub3d *cub3d, int x, int y, int color, int size)

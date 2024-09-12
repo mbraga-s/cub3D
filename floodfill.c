@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   floodfill.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: manumart <manumart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 14:42:06 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/08 18:44:32 by manumart         ###   ########.fr       */
+/*   Updated: 2024/09/11 16:23:28 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	mainfloodfill(t_cub3d *cub3d)
 	temp = map_copy(cub3d);
 	if (!temp)
 		return (1);
-	else if (flood_fill(cub3d, cub3d->player.px, cub3d->player.py, temp))
+	else if (flood_fill(cub3d, cub3d->plr.px, cub3d->plr.py, temp))
 	{
 		free_array(temp);
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:09:28 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/10 20:10:33 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:56:52 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,43 @@
 # endif
 # define BUFFER_SIZE 42
 
+//Structure containing all variables pertinent to raycasting:
+//» mapx, mapy - position on the map array
+//» raydirx, raydiry - direction vector coords of the ray
+//» sidedistx, sidedisty - length of ray from current pos to next x or y-side
+//» perpwalldist
+//» stepx, stepy - direction to move in each axis (1 or -1)
+//» side - flag indicating orientation of wall hit (vert or hori)
+//» lineh - height of line to draw
+//» drawbegin - pos of the first pixel to draw
+//» drawend - pos of the last pixel to draw
+typedef struct s_raydata
+{
+	int		mapx;
+	int		mapy;
+	double	camerax;
+	double	raydirx;
+	double	raydiry;
+	double	sidedistx;
+	double	sidedisty;
+	double	perpwalldist;
+	int		stepx;
+	int		stepy;
+	int		side; //was a NS or a EW wall hit?
+	int		lineh;
+	int		drawbegin;
+	int		drawend;
+}					t_raydata;
 
-// typedef struct s_raydata
-// {
-// 	double	posx;
-// 	double	posy;
-// 	double	dirx;
-// 	double	diry;
-// 	double	planex;
-// 	double	planey;
-// 	double 	time;
-// 	double 	oldtime;
-// }					t_raydata;
-
+// bp; - mlx bits per pixel
+// l_lgt - mlx line length
+// *addr - mlx img address
 typedef struct s_img
 {
 	void			*img;
 	char			*addr;
-	int				bits_per_pixel;
-	int				line_length;
+	int				bpp;
+	int				l_lgt;
 	int				endian;
 	int				width;
 	int				height;
@@ -78,37 +96,18 @@ typedef struct s_floornceiling
 
 typedef struct s_map
 {
-	t_floornceiling	floor;
-	t_floornceiling	ceiling;
 	char			**map;
 	char			*n_texture;
 	char			*s_texture;
 	char			*w_texture;
 	char			*e_texture;
-}					t_map;
-
-typedef struct s_textures
-{
 	t_img			no;
 	t_img			so;
 	t_img			we;
 	t_img			ea;
-
-}					t_textures;
-
-//  			bpp;    // mlx bits per pixel
-//  			l_lgt;  // mlx line length
-//  			*addr; // mlx img address
-typedef struct s_strmlx
-{
-	void			*mlx;
-	void			*win;
-	void			*img;
-	int				bpp;
-	int				l_lgt;
-	char			*addr;
-	int				endian;
-}					t_strmlx;
+	t_floornceiling	floor;
+	t_floornceiling	ceiling;
+}					t_map;
 
 // float 		px;    // player x coord
 // 	float 		py;    // player y coord
@@ -118,8 +117,14 @@ typedef struct s_strmlx
 // 	int 		p_color; // player color (only relevant for minimap)
 typedef struct s_player
 {
-	float			px;
-	float			py;
+	double			px;
+	double			py;
+	double			dirx;
+	double			diry;
+	double			planex;
+	double			planey;
+	double			mv_spd;
+	double			rot_spd;
 	float			pa;
 
 }					t_player;
@@ -131,19 +136,14 @@ typedef struct s_player
 typedef struct s_cub3d
 {
 	t_map			map;
-	t_strmlx		smlx;
-	t_textures		textures;
-	t_player		player;
+	t_player		plr;
 	t_color			colors;
+	void			*mlx;
+	void			*win;
+	t_img			scrn;
 	int				height;
 	int				width;
 	int				size;
-	double			move_speed;
-	double			rot_spd;
-	double 			dirx;
-	double 			diry;
-	double 			planex;
-	double 			planey;
 	int				wn_w;
 	int				wn_h;
 }					t_cub3d;
@@ -190,7 +190,7 @@ void				put_pixel(t_cub3d *cub3d, int x, int y, int color);
 
 void				draw_map(t_cub3d *cub3d);
 
-int					draw_player(t_cub3d *cub3d, int color, int scale);
+int					draw_plr(t_cub3d *cub3d, int color, int scale);
 
 void				ft_draw_vline(t_cub3d *cub3d, int x, int y1, int y2);
 
@@ -205,9 +205,9 @@ int					draw_area(t_cub3d *cub3d, int x1, int y1, int x2, int y2);
 
 void				limit_angle(float *angle);
 
-int					get_player(t_cub3d *cub3d);
+int					get_plr(t_cub3d *cub3d);
 
-int					lookforplayer(t_cub3d *cub3d, int i, int j);
+int					lookforplr(t_cub3d *cub3d, int i, int j);
 int					mainfloodfill(t_cub3d *cub3d);
 char				**map_copy(t_cub3d *cub3d);
 

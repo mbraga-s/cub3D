@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:25:39 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/09 19:55:39 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 10:25:57 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	limit_angle(float *angle)
 		*angle -= 2 * PI;
 }
 
-// Frees the map array. Probably a duplicate function, will delete later.
+// Frees the map array Probably a duplicate function, will delete later.
 int	map_free(char **maparray)
 {
 	int	i;
@@ -39,10 +39,14 @@ int	map_free(char **maparray)
 // Frees mlx allocated stuff, the map, and exits.
 int	end_game(t_cub3d *cub3d)
 {
-	mlx_destroy_image(cub3d->smlx.mlx, cub3d->smlx.img);
-	mlx_destroy_window(cub3d->smlx.mlx, cub3d->smlx.win);
-	mlx_destroy_display(cub3d->smlx.mlx);
-	free(cub3d->smlx.mlx);
+	mlx_destroy_image(cub3d->mlx, cub3d->map.no.img);
+	mlx_destroy_image(cub3d->mlx, cub3d->map.so.img);
+	mlx_destroy_image(cub3d->mlx, cub3d->map.we.img);
+	mlx_destroy_image(cub3d->mlx, cub3d->map.ea.img);
+	mlx_destroy_image(cub3d->mlx, cub3d->scrn.img);
+	mlx_destroy_window(cub3d->mlx, cub3d->win);
+	mlx_destroy_display(cub3d->mlx);
+	free(cub3d->mlx);
 	free_array(cub3d->map.map);
 	free_textures(cub3d);
 	exit(0);
