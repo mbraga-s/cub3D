@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 18:23:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/12 19:48:44 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 22:29:27 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,17 @@ void	put_pixel(t_cub3d *cub3d, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
+//Retrieves the color corresponding to the given coords on the texture.
+//Corrects for mlx ajustments.
+int	get_color(t_img *texture, int x, int y)
+{
+	char	*dst;
+
+	dst = texture->addr + (y * texture->l_lgt + x * (texture->bpp / 8));
+	return (*(unsigned int *)dst);
+}
+
+//Draws a scalable minimap on the corner of the map.
 void	draw_map(t_cub3d *cub3d)
 {
 	int	i;
@@ -43,11 +54,17 @@ void	draw_map(t_cub3d *cub3d)
 		while (f < (cub3d->width))
 		{
 			if (cub3d->map.map[i][f] == '1')
+			{
 				color = 0x000f0f0f;
-			else
+				draw_square(cub3d, (f * scale) + (scale / 2 + 1), (i \
+						* scale) + (scale / 2 + 1), color, scale);
+			}
+			else if (cub3d->map.map[i][f] != ' ' && cub3d->map.map[i][f])
+			{
 				color = 0xff44f044;
-			draw_square(cub3d, (f * scale) + (scale / 2 + 1), (i
-					* scale) + (scale / 2 + 1), color, scale);
+				draw_square(cub3d, (f * scale) + (scale / 2 + 1), (i \
+						* scale) + (scale / 2 + 1), color, scale);
+			}
 			f++;
 		}
 		i++;

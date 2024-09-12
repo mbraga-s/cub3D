@@ -6,19 +6,23 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:25:39 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/12 10:25:57 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 22:17:16 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Keeps the given angle between 0 and 2PI.
-void	limit_angle(float *angle)
+//Initializes some of the values in raydata struct.
+void	init_raydata(t_cub3d *cub3d, t_raydata *rd, int x)
 {
-	if (*angle < 0)
-		*angle += 2 * PI;
-	else if (*angle > 2 * PI)
-		*angle -= 2 * PI;
+	rd->camerax = 2 * x / (double)cub3d->wn_w - 1;
+	rd->raydirx = cub3d->plr.dirx + cub3d->plr.planex * rd->camerax;
+	rd->raydiry = cub3d->plr.diry + cub3d->plr.planey * rd->camerax;
+	rd->mapx = (int)(cub3d->plr.px);
+	rd->mapy = (int)(cub3d->plr.py);
+	rd->sidedistx = 0;
+	rd->sidedisty = 0;
+	rd->perpwalldist = 0;
 }
 
 // Frees the map array Probably a duplicate function, will delete later.
@@ -81,32 +85,3 @@ int	draw_area(t_cub3d *cub3d, int x1, int y1, int x2, int y2)
 	}
 	return (0);
 }
-
-// void	depth_field(t_cub3d *cub3d, t_raydata *rd, int flag)
-// {
-// 	while (rd->dof < (cub3d->width - 2))
-// 	{
-// 		rd->mx = abs((int)rd->rx / cub3d->size);
-// 		rd->my = abs((int)rd->ry / cub3d->size);
-// 		rd->mp = rd->my * cub3d->width + rd->mx;
-// 		if (rd->mp < cub3d->width * cub3d->height
-// 			&& cub3d->map.map[rd->my][rd->mx] == '1')
-// 			rd->dof = (cub3d->width - 2);
-// 		else
-// 		{
-// 			rd->rx += rd->xo;
-// 			rd->ry += rd->yo;
-// 			rd->dof += 1;
-// 		}
-// 	}
-// 	if (flag == 1) // means horizontal
-// 	{
-// 		rd->hx = rd->rx;
-// 		rd->hy = rd->ry;
-// 	}
-// 	else
-// 	{
-// 		rd->vx = rd->rx;
-// 		rd->vy = rd->ry;
-// 	}
-// }

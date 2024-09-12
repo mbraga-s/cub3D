@@ -6,25 +6,49 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:15:03 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/12 19:44:58 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:27:57 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Handles the behaviour of certain keys.
-// Part 4 of 4. D.
+// Part 5 of 5. A and D.
+int	key_hook5(int keycode, t_cub3d *cub3d)
+{
+	if (keycode == XK_d)
+	{
+		if (cub3d->map.map[(int)(cub3d->plr.py)][(int)(cub3d->plr.px + \
+				cub3d->plr.planex * cub3d->plr.mv_spd)] != '1')
+			cub3d->plr.px += cub3d->plr.planex * cub3d->plr.mv_spd;
+		if (cub3d->map.map[(int)(cub3d->plr.py + cub3d->plr.planey * \
+				cub3d->plr.mv_spd)][(int)(cub3d->plr.px)] != '1')
+			cub3d->plr.py += cub3d->plr.planey * cub3d->plr.mv_spd;
+		return (1);
+	}
+	else if (keycode == XK_a)
+	{
+		if (cub3d->map.map[(int)(cub3d->plr.py)][(int)(cub3d->plr.px - \
+				cub3d->plr.planex * cub3d->plr.mv_spd)] != '1')
+			cub3d->plr.px -= cub3d->plr.planex * cub3d->plr.mv_spd;
+		if (cub3d->map.map[(int)(cub3d->plr.py - cub3d->plr.planey * \
+				cub3d->plr.mv_spd)][(int)(cub3d->plr.px)] != '1')
+			cub3d->plr.py -= cub3d->plr.planey * cub3d->plr.mv_spd;
+		return (1);
+	}
+	else
+		return (0);
+	return (1);
+}
+
+// Handles the behaviour of certain keys.
+// Part 4 of 5. Right Arrow.
 int	key_hook4(int keycode, t_cub3d *cub3d)
 {
 	double	olddirx;
 	double	oldplanex;
 
-	if (keycode == XK_d)
-	{
-		// tempa = cub3d->plr.pa + (PI / 2);
-		// limit_angle(&tempa);
-	}
-	else if (keycode == XK_Right)
+	if (keycode == XK_Right)
 	{
 		olddirx = cub3d->plr.dirx;
 		oldplanex = cub3d->plr.planex;
@@ -38,13 +62,13 @@ int	key_hook4(int keycode, t_cub3d *cub3d)
 			cub3d->plr.planey * cos(cub3d->plr.rot_spd);
 		return (1);
 	}
-	else
-		return (0);
-	return (1);
+	else if (key_hook5(keycode, cub3d))
+		return (1);
+	return (0);
 }
 
 // Handles the behaviour of certain keys.
-// Part 3 of 4. Right Arrow and A.
+// Part 3 of 5. Left Arrow.
 int	key_hook3(int keycode, t_cub3d *cub3d)
 {
 	double	olddirx;
@@ -70,7 +94,7 @@ int	key_hook3(int keycode, t_cub3d *cub3d)
 }
 
 // Handles the behaviour of certain keys.
-// Part 2 of 4. W, S, Left Arrow, Up Arrow and Down Arrow.
+// Part 2 of 5. W, S, Up Arrow and Down Arrow.
 int	key_hook2(int keycode, t_cub3d *cub3d)
 {
 	if (keycode == XK_w || keycode == XK_Up)
@@ -85,8 +109,12 @@ int	key_hook2(int keycode, t_cub3d *cub3d)
 	}
 	else if (keycode == XK_s || keycode == XK_Down)
 	{
-		cub3d->plr.px -= cub3d->plr.dirx * cub3d->plr.mv_spd;
-		cub3d->plr.py -= cub3d->plr.diry * cub3d->plr.mv_spd;
+		if (cub3d->map.map[(int)(cub3d->plr.py)][(int)(cub3d->plr.px - \
+				cub3d->plr.dirx * cub3d->plr.mv_spd)] != '1')
+			cub3d->plr.px -= cub3d->plr.dirx * cub3d->plr.mv_spd;
+		if (cub3d->map.map[(int)(cub3d->plr.py - cub3d->plr.diry * \
+				cub3d->plr.mv_spd)][(int)(cub3d->plr.px)] != '1')
+			cub3d->plr.py -= cub3d->plr.diry * cub3d->plr.mv_spd;
 		return (1);
 	}
 	else if (key_hook3(keycode, cub3d))
@@ -95,7 +123,7 @@ int	key_hook2(int keycode, t_cub3d *cub3d)
 }
 
 // Handles the behaviour of certain keys.
-// Part 1 of 4. Esc. Calls the rendering functions.
+// Part 1 of 5. Esc. Calls the rendering functions.
 int	key_hook(int keycode, t_cub3d *cub3d)
 {
 	if (keycode == XK_Escape)

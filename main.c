@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:58:33 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/12 20:08:50 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 22:28:30 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,7 @@ void	init_cub3d(t_cub3d *cub3d)
 int	main(int argc, char **argv)
 {
 	t_cub3d	cub3d;
-	int	i;
-	int	f;
 
-	i = 0;
 	nullcub3d(&cub3d);
 	if (argc != 2)
 	{

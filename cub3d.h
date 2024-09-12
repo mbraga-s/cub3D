@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:09:28 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/12 19:50:00 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 22:17:26 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,69 +146,73 @@ typedef struct s_cub3d
 	int				wn_h;
 }					t_cub3d;
 
-char				*get_next_line(int fd);
+char		*get_next_line(int fd);
 
-char				*ft_strjoin_gnl(char *str1, char *str2);
+char		*ft_strjoin_gnl(char *str1, char *str2);
 
-int					stashfree(char *buff);
+int			stashfree(char *buff);
 
-int					separate_values(int file, t_cub3d *cub3d);
+int			separate_values(int file, t_cub3d *cub3d);
 
-void				free_array(char **str);
+void		free_array(char **str);
 
-void				free_str(char *str);
+void		free_str(char *str);
 
-int					textures(int fd, t_cub3d *cub3d);
+int			textures(int fd, t_cub3d *cub3d);
 
-int					trytofindtextures(int fd, t_cub3d *cub3d);
+int			trytofindtextures(int fd, t_cub3d *cub3d);
 
-void				exit_error(char *str);
+void		exit_error(char *str);
 
-int					colors(int fd, t_cub3d *cub3d);
+int			colors(int fd, t_cub3d *cub3d);
 
-int					trytofindcolors(char *line, t_cub3d *cub3d);
+int			trytofindcolors(char *line, t_cub3d *cub3d);
 
-int					parse(char *file, t_cub3d *cub3d);
+int			parse(char *file, t_cub3d *cub3d);
 
-void				free_textures(t_cub3d *cub3d);
+void		free_textures(t_cub3d *cub3d);
 
-int					map_free(char **maparray);
+int			map_free(char **maparray);
 
-int					ft_get_map(int fd, t_cub3d *cub3d);
+int			ft_get_map(int fd, t_cub3d *cub3d);
 
-int					ft_parse_map(t_cub3d *cub3d);
+int			ft_parse_map(t_cub3d *cub3d);
 
-int					ft_mapmain(int fd, t_cub3d *cub3d);
+int			ft_mapmain(int fd, t_cub3d *cub3d);
 
-///////////////////////////////////////////////////////////////
+int			get_plr(t_cub3d *cub3d);
 
-int					key_hook(int keycode, t_cub3d *cub3d);
+int			lookforplr(t_cub3d *cub3d, int i, int j);
 
-void				put_pixel(t_cub3d *cub3d, int x, int y, int color);
+int			mainfloodfill(t_cub3d *cub3d);
 
-void				draw_map(t_cub3d *cub3d);
+char		**map_copy(t_cub3d *cub3d);
 
-void				ft_draw_vline(t_cub3d *cub3d, int x, int y1, int y2);
+int			flood_fill(t_cub3d *cub3d, int x, int y, char **temp);
 
-int					draw_square(t_cub3d *cub3d, int x, int y, int color,
-						int size);
+void		nullcub3d(t_cub3d *cub3d);
 
-void				raycasting(t_cub3d *cub3d);
+//////////////// RAY CASTING ////////////////////
 
-int					end_game(t_cub3d *cub3d);
+int			key_hook(int keycode, t_cub3d *cub3d);
 
-int					draw_area(t_cub3d *cub3d, int x1, int y1, int x2, int y2);
+void		init_raydata(t_cub3d *cub3d, t_raydata *rd, int x);
 
-void				limit_angle(float *angle);
+int			get_color(t_img *texture, int x, int y);
 
-int					get_plr(t_cub3d *cub3d);
+void		put_pixel(t_cub3d *cub3d, int x, int y, int color);
 
-int					lookforplr(t_cub3d *cub3d, int i, int j);
-int					mainfloodfill(t_cub3d *cub3d);
-char				**map_copy(t_cub3d *cub3d);
+void		draw_map(t_cub3d *cub3d);
 
-int					flood_fill(t_cub3d *cub3d, int x, int y, char **temp);
+void		ft_draw_vline(t_cub3d *cub3d, int x, int y1, int y2);
 
-void				nullcub3d(t_cub3d *cub3d);
+int			draw_square(t_cub3d *cub3d, int x, int y, int color,
+				int size);
+
+void		raycasting(t_cub3d *cub3d);
+
+int			end_game(t_cub3d *cub3d);
+
+int			draw_area(t_cub3d *cub3d, int x1, int y1, int x2, int y2);
 
 #endif

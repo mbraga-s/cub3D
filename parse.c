@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 19:57:34 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/11 16:23:28 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:49:47 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,14 @@ int	separate_values(int fd, t_cub3d *cub3d)
 {
 	if (textures(fd, cub3d))
 		return (1);
-	printf("Textures parsed\n");
 	if (colors(fd, cub3d))
 		return (1);
-	printf("Colors parsed\n");
 	if (ft_mapmain(fd, cub3d))
 		return (1);
 	if (get_plr(cub3d))
 		return (1);
-	printf("Player found\n");
 	if (mainfloodfill(cub3d))
 		return (1);
-	printf("Map parsed\n");
 	return (0);
 }
 
