@@ -1,8 +1,8 @@
 
-NO ./textures_xpm/artpano.XPM
-SO ./textures_xpm/artpano3.XPM
+NO ./textures_xpm/Bushes.xpm
+SO ./textures_xpm/naturalbricks.xpm
 WE ./textures_xpm/redbrick.xpm
-EA ./textures_xpm/door_rust.xpm
+EA ./textures_xpm/naturalbricks_hd_dark.XPM
 
 F 173,190,209
 C 166,166,166

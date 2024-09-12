@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:09:28 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/12 11:56:52 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:06:21 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_raydata
 	double	perpwalldist;
 	int		stepx;
 	int		stepy;
-	int		side; //was a NS or a EW wall hit?
+	int		side;
 	int		lineh;
 	int		drawbegin;
 	int		drawend;
