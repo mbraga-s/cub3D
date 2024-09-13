@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:09:28 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/13 11:34:03 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/13 23:46:08 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,9 @@ typedef struct s_cub3d
 	int				width;
 	int				wn_w;
 	int				wn_h;
+	int				ws_flag;
+	int				ad_flag;
+	int				lr_flag;
 }					t_cub3d;
 
 char		*get_next_line(int fd);
@@ -216,5 +219,23 @@ void		raycasting(t_cub3d *cub3d);
 int			end_game(t_cub3d *cub3d);
 
 int			draw_area(t_cub3d *cub3d, int x2, int y2);
+
+int			key_hook_press(int keycode, t_cub3d *cub3d);
+
+int			key_hook_release(int keycode, t_cub3d *cub3d);
+
+int			choose_move(t_cub3d *cub3d);
+
+void		move_d(t_cub3d *cub3d);
+
+void		move_a(t_cub3d *cub3d);
+
+void		move_right(t_cub3d *cub3d);
+
+void		move_left(t_cub3d *cub3d);
+
+void		move_wu(t_cub3d *cub3d);
+
+void		move_sd(t_cub3d *cub3d);
 
 #endif

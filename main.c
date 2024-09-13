@@ -6,12 +6,13 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:58:33 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/13 11:39:21 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/13 23:51:34 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Loads the given textures into mlx imgs. Returns an error if it fails.
 void	load_txts(t_cub3d *cub3d, t_map *map)
 {
 	map->no.img = mlx_xpm_file_to_image(cub3d->mlx, map->n_texture, \
@@ -40,10 +41,12 @@ void	load_txts(t_cub3d *cub3d, t_map *map)
 			&map->ea.l_lgt, &map->ea.endian);
 }
 
-// 1024 ou 1600
-// 768 ou 1200
+// Initializes some values needed for raycasting as well as the mlx
 void	init_cub3d(t_cub3d *cub3d)
 {
+	cub3d->ws_flag = 0;
+	cub3d->ad_flag = 0;
+	cub3d->lr_flag = 0;
 	cub3d->wn_w = 1024;
 	cub3d->wn_h = 768;
 	cub3d->plr.rot_spd = 0.01;
@@ -82,12 +85,13 @@ int	main(int argc, char **argv)
 	if (parse(argv[1], &cub3d))
 		exit_error("parser error");
 	init_cub3d(&cub3d);
-	// draw_area(&cub3d, cub3d.wn_w, cub3d.wn_h);
 	raycasting(&cub3d);
 	// draw_map(&cub3d);
 	mlx_put_image_to_window(cub3d.mlx, cub3d.win, cub3d.scrn.img, 0, \
 		0);
-	mlx_hook(cub3d.win, 17, 1, end_game, &cub3d);
-	mlx_hook(cub3d.win, 2, 1L, key_hook, &cub3d);
+	mlx_hook(cub3d.win, 2, 1L << 0, key_hook_press, &cub3d);
+	mlx_hook(cub3d.win, 3, 1L << 1, key_hook_release, &cub3d);
+	mlx_hook(cub3d.win, 17, 1L << 17, end_game, &cub3d);
+	mlx_loop_hook(cub3d.mlx, choose_move, &cub3d);
 	mlx_loop(cub3d.mlx);
 }
