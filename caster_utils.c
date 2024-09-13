@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:25:39 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/12 22:17:16 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:42:51 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,28 @@ int	end_game(t_cub3d *cub3d)
 }
 
 // Draws an area starting at (x1, y1) to (x2, y2) of color set in cub3D struct.
-int	draw_area(t_cub3d *cub3d, int x1, int y1, int x2, int y2)
+int	draw_area(t_cub3d *cub3d, int x2, int y2)
 {
 	int	xinc;
 	int	yinc;
 
-	yinc = y1;
+	yinc = 0;
 	while (yinc < (y2 / 2))
 	{
-		xinc = x1;
+		xinc = 0;
 		while (xinc < x2)
 		{
-			put_pixel(cub3d, x1 + xinc, y1 + yinc, 0xFF00FFFF);
+			put_pixel(cub3d, xinc, yinc, cub3d->map.ceiling.color.color);
 			xinc++;
 		}
 		yinc++;
 	}
 	while (yinc < y2)
 	{
-		xinc = x1;
+		xinc = 0;
 		while (xinc < x2)
 		{
-			put_pixel(cub3d, x1 + xinc, y1 + yinc, 0xFF00FF00);
+			put_pixel(cub3d, xinc, yinc, cub3d->map.floor.color.color);
 			xinc++;
 		}
 		yinc++;

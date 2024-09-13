@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:09:28 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/12 22:17:26 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:34:03 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,10 @@ typedef struct s_raydata
 	int		lineh;
 	int		drawbegin;
 	int		drawend;
+	int		textx;
+	int		texty;
+	double	step;
+	double	textpos;
 }					t_raydata;
 
 // bp; - mlx bits per pixel
@@ -198,13 +202,11 @@ int			key_hook(int keycode, t_cub3d *cub3d);
 
 void		init_raydata(t_cub3d *cub3d, t_raydata *rd, int x);
 
-int			get_color(t_img *texture, int x, int y);
-
 void		put_pixel(t_cub3d *cub3d, int x, int y, int color);
 
 void		draw_map(t_cub3d *cub3d);
 
-void		ft_draw_vline(t_cub3d *cub3d, int x, int y1, int y2);
+void		draw_text(t_cub3d *cub3d, t_raydata *rd, t_img *text, int x);
 
 int			draw_square(t_cub3d *cub3d, int x, int y, int color,
 				int size);
@@ -213,6 +215,6 @@ void		raycasting(t_cub3d *cub3d);
 
 int			end_game(t_cub3d *cub3d);
 
-int			draw_area(t_cub3d *cub3d, int x1, int y1, int x2, int y2);
+int			draw_area(t_cub3d *cub3d, int x2, int y2);
 
 #endif

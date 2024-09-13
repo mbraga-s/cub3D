@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:15:03 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/12 21:27:57 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:39:24 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,8 @@ int	key_hook(int keycode, t_cub3d *cub3d)
 		end_game(cub3d);
 	else if (key_hook2(keycode, cub3d))
 	{
-		draw_area(cub3d, 0, 0, cub3d->wn_w, cub3d->wn_h);
 		raycasting(cub3d);
-		draw_map(cub3d);
+		// draw_map(cub3d);
 		mlx_put_image_to_window(cub3d->mlx, cub3d->win, \
 			(cub3d->scrn).img, 0, 0);
 	}

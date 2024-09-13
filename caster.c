@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:35:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/12 22:18:38 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/13 12:06:17 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,34 +67,25 @@ void	dda_algorithm(t_cub3d *cub3d, t_raydata *rd)
 	}
 }
 
+//Calculates all the needed variables for drawing the texture
 void	calc_text(t_cub3d *cub3d, t_raydata *rd, t_img *text, int x)
 {
-	int		textx;
-	int		texty;
-	int		y;
 	double	wallx;
-	double	step;
-	double	textpos;
 
-	y = rd->drawbegin;
 	if (rd->side == 1)
 		wallx = cub3d->plr.py + rd->perpwalldist * rd->raydiry;
 	else
 		wallx = cub3d->plr.px + rd->perpwalldist * rd->raydirx;
 	wallx -= floor(wallx);
-	textx = (int)(wallx * (double)text->width);
-	if ((rd->side == 0 && rd->raydirx > 0) || (rd->side == 1 && rd->raydiry < 0))
-		textx = text->width - textx - 1;
-	step = (double)text->height / (double)rd->lineh;
-	textpos = (double)(rd->drawbegin - cub3d->wn_h / 2 + rd->lineh / 2) * step;
-	while (y < rd->drawend)
-	{
-		texty = (int)textpos & (text->height - 1);
-		textpos += step;
-		cub3d->colors.mm_w3dcolor = get_color(text, textx, texty);
-		put_pixel(cub3d, x, y, cub3d->colors.mm_w3dcolor);
-		y++;
-	}
+	rd->textx = (int)(wallx * (double)text->width);
+	if (rd->side == 0 && rd->raydiry > 0)
+		rd->textx = text->width - rd->textx - 1;
+	if (rd->side == 1 && rd->raydirx < 0)
+		rd->textx = text->width - rd->textx - 1;
+	rd->step = 1.0 * text->height / rd->lineh;
+	rd->textpos = (double)(rd->drawbegin - cub3d->wn_h / 2 + \
+		rd->lineh / 2) * rd->step;
+	draw_text(cub3d, rd, text, x);
 }
 
 //Calculates the starting and ending pixels to draw the vertical strip
@@ -132,7 +123,6 @@ void	raycasting(t_cub3d *cub3d)
 	x = 0;
 	while (x < cub3d->wn_w)
 	{
-
 		init_raydata(cub3d, &rd, x);
 		calc_raylength(cub3d, &rd);
 		dda_algorithm(cub3d, &rd);
@@ -140,10 +130,7 @@ void	raycasting(t_cub3d *cub3d)
 			rd.perpwalldist = (rd.sidedistx - fabs(1 / rd.raydirx));
 		else
 			rd.perpwalldist = (rd.sidedisty - fabs(1 / rd.raydiry));
-		if (rd.perpwalldist != 0)
-			rd.lineh = (int)(cub3d->wn_h / rd.perpwalldist);
-		else
-			rd.lineh = cub3d->wn_h;
+		rd.lineh = (int)(cub3d->wn_h / rd.perpwalldist);
 		draw_rays(cub3d, &rd, x);
 		x++;
 	}

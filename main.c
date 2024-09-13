@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:58:33 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/12 22:28:30 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:39:21 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	init_cub3d(t_cub3d *cub3d)
 {
 	cub3d->wn_w = 1024;
 	cub3d->wn_h = 768;
-	cub3d->plr.rot_spd = 0.1;
-	cub3d->plr.mv_spd = 0.25;
+	cub3d->plr.rot_spd = 0.01;
+	cub3d->plr.mv_spd = 0.015;
 	cub3d->plr.planex = -cub3d->plr.diry * tan(33 * PI / 180);
 	cub3d->plr.planey = cub3d->plr.dirx * tan(33 * PI / 180);
 	cub3d->mlx = mlx_init();
@@ -82,9 +82,9 @@ int	main(int argc, char **argv)
 	if (parse(argv[1], &cub3d))
 		exit_error("parser error");
 	init_cub3d(&cub3d);
-	draw_area(&cub3d, 0, 0, cub3d.wn_w, cub3d.wn_h);
+	// draw_area(&cub3d, cub3d.wn_w, cub3d.wn_h);
 	raycasting(&cub3d);
-	draw_map(&cub3d);
+	// draw_map(&cub3d);
 	mlx_put_image_to_window(cub3d.mlx, cub3d.win, cub3d.scrn.img, 0, \
 		0);
 	mlx_hook(cub3d.win, 17, 1, end_game, &cub3d);

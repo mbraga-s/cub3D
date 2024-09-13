@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 18:23:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/12 22:29:27 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:29:11 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,32 @@ int	get_color(t_img *texture, int x, int y)
 
 	dst = texture->addr + (y * texture->l_lgt + x * (texture->bpp / 8));
 	return (*(unsigned int *)dst);
+}
+
+//Draws the given texture as well as the ceiling and floor for the X strip
+void	draw_text(t_cub3d *cub3d, t_raydata *rd, t_img *text, int x)
+{
+	int	y;
+
+	y = 0;
+	while (y < rd->drawbegin)
+	{
+		put_pixel(cub3d, x, y, cub3d->map.ceiling.color.color);
+		y++;
+	}
+	while (y <= rd->drawend)
+	{
+		rd->texty = (int)rd->textpos & (text->height - 1);
+		rd->textpos += rd->step;
+		cub3d->colors.mm_w3dcolor = get_color(text, rd->textx, rd->texty);
+		put_pixel(cub3d, x, y, cub3d->colors.mm_w3dcolor);
+		y++;
+	}
+	while (y < cub3d->wn_h)
+	{
+		put_pixel(cub3d, x, y, cub3d->map.floor.color.color);
+		y++;
+	}
 }
 
 //Draws a scalable minimap on the corner of the map.
@@ -70,29 +96,6 @@ void	draw_map(t_cub3d *cub3d)
 		i++;
 	}
 	draw_square(cub3d, cub3d->plr.px * scale, cub3d->plr.py * scale, 0xFFFFFF00, scale - 2);
-}
-
-// Draws a line between the two given points (x1, y1) and (x2, y2).
-void	ft_draw_vline(t_cub3d *cub3d, int x, int y1, int y2)
-{
-	int	lesser;
-	int	greater;
-
-	if (y1 < y2)
-	{
-		lesser = y1;
-		greater = y2;
-	}
-	else
-	{
-		lesser = y2;
-		greater = y1;
-	}
-	while (lesser <= greater)
-	{
-		put_pixel(cub3d, x, lesser, cub3d->colors.mm_w3dcolor);
-		lesser++;
-	}
 }
 
 int	draw_square(t_cub3d *cub3d, int x, int y, int color, int size)
