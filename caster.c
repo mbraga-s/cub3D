@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:35:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/13 12:06:17 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 12:12:38 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ void	calc_text(t_cub3d *cub3d, t_raydata *rd, t_img *text, int x)
 	else
 		wallx = cub3d->plr.px + rd->perpwalldist * rd->raydirx;
 	wallx -= floor(wallx);
-	rd->textx = (int)(wallx * (double)text->width);
+	rd->textx = (int)(wallx * (double)text->w);
 	if (rd->side == 0 && rd->raydiry > 0)
-		rd->textx = text->width - rd->textx - 1;
+		rd->textx = text->w - rd->textx - 1;
 	if (rd->side == 1 && rd->raydirx < 0)
-		rd->textx = text->width - rd->textx - 1;
-	rd->step = 1.0 * text->height / rd->lineh;
+		rd->textx = text->w - rd->textx - 1;
+	rd->step = 1.0 * text->h / rd->lineh;
 	rd->textpos = (double)(rd->drawbegin - cub3d->wn_h / 2 + \
 		rd->lineh / 2) * rd->step;
 	draw_text(cub3d, rd, text, x);

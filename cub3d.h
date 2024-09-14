@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:09:28 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/13 23:46:08 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 13:47:18 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,22 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# ifndef PI
-#  define PI 3.14159
-#  define P2 PI / 2
-#  define P3 3 * PI / 2
-# endif
+# define PI 3.14159
 # define BUFFER_SIZE 42
 
 //Structure containing all variables pertinent to raycasting:
 //» mapx, mapy - position on the map array
 //» raydirx, raydiry - direction vector coords of the ray
 //» sidedistx, sidedisty - length of ray from current pos to next x or y-side
-//» perpwalldist
+//» perpwalldist - distance between the camera plane and the ray hit
 //» stepx, stepy - direction to move in each axis (1 or -1)
 //» side - flag indicating orientation of wall hit (vert or hori)
 //» lineh - height of line to draw
 //» drawbegin - pos of the first pixel to draw
 //» drawend - pos of the last pixel to draw
+//» textx, texty - pos of the texture pixel
+//» step - pos of the last pixel to draw
+//» textpos - pos of the last pixel to draw
 typedef struct s_raydata
 {
 	int		mapx;
@@ -73,13 +72,13 @@ typedef struct s_img
 	int				bpp;
 	int				l_lgt;
 	int				endian;
-	int				width;
-	int				height;
+	int				w;
+	int				h;
 }					t_img;
 
-//  			color;       // current color (usefull while testing)
-// 					mm_w3dcolor; // raycast line color (former w_color)
-// 					mm_wcolor;   // minimap wall color (former w_color)
+// color - current color (usefull while testing)
+// mm_w3dcolor - raycast line color (former w_color)
+// »mm_wcolor - minimap wall color (former w_color)
 typedef struct s_color
 {
 	int				r;
@@ -113,44 +112,36 @@ typedef struct s_map
 	t_floornceiling	ceiling;
 }					t_map;
 
-// float 		px;    // player x coord
-// 	float 		py;    // player y coord
-// 	float 		pdx;   // player delta x
-// 	float 		pdy;   // player delta y
-// 	float 		pa;    // player angle
-// 	int 		p_color; // player color (only relevant for minimap)
 typedef struct s_player
 {
-	double			px;
-	double			py;
-	double			dirx;
-	double			diry;
-	double			planex;
-	double			planey;
-	double			mv_spd;
-	double			rot_spd;
+	double	px;
+	double	py;
+	double	dirx;
+	double	diry;
+	double	planex;
+	double	planey;
+	double	mv_spd;
+	double	rot_spd;
 
 }					t_player;
 
-//  t_strmlx 		smlx; // smlx porque há o *mlx na strmlx
-//  int 			size; // tile size (usually 64x64 pixels)
 //  int 			wn_w; // window width
 // 	int 			wn_h; // window width
 typedef struct s_cub3d
 {
-	t_map			map;
-	t_img			scrn;
-	t_player		plr;
-	t_color			colors;
-	void			*mlx;
-	void			*win;
-	int				height;
-	int				width;
-	int				wn_w;
-	int				wn_h;
-	int				ws_flag;
-	int				ad_flag;
-	int				lr_flag;
+	t_map		map;
+	t_img		scrn;
+	t_player	plr;
+	t_color		colors;
+	void		*mlx;
+	void		*win;
+	int			height;
+	int			width;
+	int			wn_w;
+	int			wn_h;
+	int			ws_flag;
+	int			ad_flag;
+	int			lr_flag;
 }					t_cub3d;
 
 char		*get_next_line(int fd);
@@ -201,20 +192,17 @@ void		nullcub3d(t_cub3d *cub3d);
 
 //////////////// RAY CASTING ////////////////////
 
-int			key_hook(int keycode, t_cub3d *cub3d);
-
 void		init_raydata(t_cub3d *cub3d, t_raydata *rd, int x);
+
+void		init_cub3d(t_cub3d *cub3d);
 
 void		put_pixel(t_cub3d *cub3d, int x, int y, int color);
 
-void		draw_map(t_cub3d *cub3d);
-
 void		draw_text(t_cub3d *cub3d, t_raydata *rd, t_img *text, int x);
 
-int			draw_square(t_cub3d *cub3d, int x, int y, int color,
-				int size);
-
 void		raycasting(t_cub3d *cub3d);
+
+void		error_end_game(t_cub3d *cub3d, char *str);
 
 int			end_game(t_cub3d *cub3d);
 

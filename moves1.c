@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:15:03 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/13 23:51:38 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 13:31:10 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	move_wu(t_cub3d *cub3d)
 int	redraw_screen(t_cub3d *cub3d)
 {
 	raycasting(cub3d);
-	// draw_map(cub3d);
 	mlx_put_image_to_window(cub3d->mlx, cub3d->win, \
 		(cub3d->scrn).img, 0, 0);
 	return (0);
@@ -76,9 +75,9 @@ int	key_hook_press(int keycode, t_cub3d *cub3d)
 // Updates the flag values depending on the keys pressed.
 int	key_hook_release(int keycode, t_cub3d *cub3d)
 {
-	if (keycode == XK_w)
+	if (keycode == XK_w || keycode == XK_Up)
 		cub3d->ws_flag = 0;
-	else if (keycode == XK_s)
+	else if (keycode == XK_s || keycode == XK_Down)
 		cub3d->ws_flag = 0;
 	else if (keycode == XK_a)
 		cub3d->ad_flag = 0;
