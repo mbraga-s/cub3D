@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: manumart <manumart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 18:23:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/14 13:30:41 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 18:58:55 by manumart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	put_pixel(t_cub3d *cub3d, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-//Retrieves the color corresponding to the given coords on the texture.
-//Corrects for mlx ajustments.
+// Retrieves the color corresponding to the given coords on the texture.
+// Corrects for mlx ajustments.
 int	get_color(t_img *texture, int x, int y)
 {
 	char	*dst;
@@ -35,7 +35,7 @@ int	get_color(t_img *texture, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
-//Draws the given texture as well as the ceiling and floor for the X strip
+// Draws the given texture as well as the ceiling and floor for the X strip
 void	draw_text(t_cub3d *cub3d, t_raydata *rd, t_img *text, int x)
 {
 	int	y;

@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:58:33 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/14 13:31:19 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/15 10:31:34 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,18 @@ int	main(int argc, char **argv)
 	nullcub3d(&cub3d);
 	if (argc != 2)
 	{
-		printf("Too many / few arguments.\n");
+		exit_error("Too many / few arguments.");
 		return (0);
 	}
 	if (parse(argv[1], &cub3d))
-		exit_error("parser error");
+	{
+		free_array(cub3d.map.map);
+		free_textures(&cub3d);
+		return (1);
+	}
 	init_cub3d(&cub3d);
 	raycasting(&cub3d);
-	mlx_put_image_to_window(cub3d.mlx, cub3d.win, cub3d.scrn.img, 0, \
-		0);
+	mlx_put_image_to_window(cub3d.mlx, cub3d.win, cub3d.scrn.img, 0, 0);
 	mlx_hook(cub3d.win, 2, 1L << 0, key_hook_press, &cub3d);
 	mlx_hook(cub3d.win, 3, 1L << 1, key_hook_release, &cub3d);
 	mlx_hook(cub3d.win, 17, 1L << 17, end_game, &cub3d);

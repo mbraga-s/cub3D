@@ -6,7 +6,7 @@
 /*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 14:42:06 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/12 22:11:36 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/15 10:24:22 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,27 @@ char	**map_copy(t_cub3d *cub3d)
 
 int	flood_fill(t_cub3d *cub3d, int x, int y, char **temp)
 {
-	if (x <= 0 || y <= 0 || y >= cub3d->height - 1 || x >= cub3d->width - 1)
-		return (1);
-	if (temp[y][x] == '1' || temp[y][x] == 'x')
+	if (x < 0 || y < 0 || x >= cub3d->width || y >= cub3d->height)
 		return (0);
-	if (temp[y][x] == '0')
-	{
-		temp[y][x] = 'x';
-		if (flood_fill(cub3d, x + 1, y, temp))
-			return (1);
-		if (flood_fill(cub3d, x - 1, y, temp))
-			return (1);
-		if (flood_fill(cub3d, x, y + 1, temp))
-			return (1);
-		if (flood_fill(cub3d, x, y - 1, temp))
-			return (1);
-	}
-	return (0);
+	if (temp[y][x] == ' ' || temp[y][x] == '\0')
+		return (0);
+	if ((x == 0 || y == 0 || x == cub3d->width - 1 || y == cub3d->height - 1) \
+		&& temp[y][x] == '0')
+		return (0);
+	temp[y][x] = 'V';
+	if (x + 1 < cub3d->width && temp[y][x + 1] != '1' && temp[y][x + 1] != 'V')
+		if (!flood_fill(cub3d, x + 1, y, temp))
+			return (0);
+	if (x - 1 >= 0 && temp[y][x - 1] != '1' && temp[y][x - 1] != 'V')
+		if (!flood_fill(cub3d, x - 1, y, temp))
+			return (0);
+	if (y + 1 < cub3d->height && temp[y + 1][x] != '1' && temp[y + 1][x] != 'V')
+		if (!flood_fill(cub3d, x, y + 1, temp))
+			return (0);
+	if (y - 1 >= 0 && temp[y - 1][x] != '1' && temp[y - 1][x] != 'V')
+		if (!flood_fill(cub3d, x, y - 1, temp))
+			return (0);
+	return (1);
 }
 
 int	mainfloodfill(t_cub3d *cub3d)
@@ -69,8 +73,9 @@ int	mainfloodfill(t_cub3d *cub3d)
 	temp = map_copy(cub3d);
 	if (!temp)
 		return (1);
-	else if (flood_fill(cub3d, (int)cub3d->plr.px, (int)cub3d->plr.py, temp))
+	if (!flood_fill(cub3d, (int)cub3d->plr.px, (int)cub3d->plr.py, temp))
 	{
+		exit_error("Flood fill failed");
 		free_array(temp);
 		return (1);
 	}

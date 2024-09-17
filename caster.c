@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   caster.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: manumart <manumart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:35:49 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/14 12:12:38 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 18:59:00 by manumart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-//Calculates and assigns the distance of the ray from the player to
-//the first intersection with the axis (x or y), as well as the 
-//distance from the camera plane
+// Calculates and assigns the distance of the ray from the player to
+// the first intersection with the axis (x or y), as well as the
+// distance from the camera plane
 void	calc_raylength(t_cub3d *cub3d, t_raydata *rd)
 {
 	if (rd->raydirx < 0)
@@ -39,10 +39,10 @@ void	calc_raylength(t_cub3d *cub3d, t_raydata *rd)
 	}
 }
 
-//Runs the dda algorithm.
-//This algorithm checks which distance is smallest (going to next horiz line or
-//going to the next vert line) and moves the map coord, accordingly.
-//Then checks if a wall was reached. If not, continues running.
+// Runs the dda algorithm.
+// This algorithm checks which distance is smallest (going to next horiz line or
+// going to the next vert line) and moves the map coord, accordingly.
+// Then checks if a wall was reached. If not, continues running.
 void	dda_algorithm(t_cub3d *cub3d, t_raydata *rd)
 {
 	int	hit;
@@ -67,7 +67,7 @@ void	dda_algorithm(t_cub3d *cub3d, t_raydata *rd)
 	}
 }
 
-//Calculates all the needed variables for drawing the texture
+// Calculates all the needed variables for drawing the texture
 void	calc_text(t_cub3d *cub3d, t_raydata *rd, t_img *text, int x)
 {
 	double	wallx;
@@ -83,13 +83,13 @@ void	calc_text(t_cub3d *cub3d, t_raydata *rd, t_img *text, int x)
 	if (rd->side == 1 && rd->raydirx < 0)
 		rd->textx = text->w - rd->textx - 1;
 	rd->step = 1.0 * text->h / rd->lineh;
-	rd->textpos = (double)(rd->drawbegin - cub3d->wn_h / 2 + \
-		rd->lineh / 2) * rd->step;
+	rd->textpos = (double)(rd->drawbegin - cub3d->wn_h / 2 + rd->lineh / 2)
+		* rd->step;
 	draw_text(cub3d, rd, text, x);
 }
 
-//Calculates the starting and ending pixels to draw the vertical strip
-//Depending on the rays direction, calls calc_text with the right text.
+// Calculates the starting and ending pixels to draw the vertical strip
+// Depending on the rays direction, calls calc_text with the right text.
 void	draw_rays(t_cub3d *cub3d, t_raydata *rd, int x)
 {
 	rd->drawbegin = -rd->lineh / 2 + cub3d->wn_h / 2;

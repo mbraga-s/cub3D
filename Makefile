@@ -6,7 +6,7 @@
 #    By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/12 15:38:55 by manumart          #+#    #+#              #
-#    Updated: 2024/09/13 23:48:04 by mbraga-s         ###   ########.fr        #
+#    Updated: 2024/09/15 10:25:53 by mbraga-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ NAME =cub3D
 
 SRCS_NAME =	main.c  get_next_line.c get_next_line_utils.c parse.c textures.c \
 			 free.c colors.c map.c player.c floodfill.c draw.c caster.c \
-			 caster_utils.c moves1.c moves2.c init.c\
+			 caster_utils.c moves1.c moves2.c init.c parse_utils.c\
+
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra  -g

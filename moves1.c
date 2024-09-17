@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   moves1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: manumart <manumart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:15:03 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/14 13:31:10 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 18:58:38 by manumart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 // Handles the behaviour of the w and up arrow keys.
 void	move_wu(t_cub3d *cub3d)
 {
-	if (cub3d->map.map[(int)(cub3d->plr.py)][(int)(cub3d->plr.px + \
-			cub3d->plr.dirx * cub3d->plr.mv_spd)] != '1')
+	if (cub3d->map.map[(int)(cub3d->plr.py)][(int)(cub3d->plr.px
+			+ cub3d->plr.dirx * cub3d->plr.mv_spd)] != '1')
 		cub3d->plr.px += cub3d->plr.dirx * cub3d->plr.mv_spd;
-	if (cub3d->map.map[(int)(cub3d->plr.py + cub3d->plr.diry * \
-			cub3d->plr.mv_spd)][(int)(cub3d->plr.px)] != '1')
+	if (cub3d->map.map[(int)(cub3d->plr.py + cub3d->plr.diry
+			* cub3d->plr.mv_spd)][(int)(cub3d->plr.px)] != '1')
 		cub3d->plr.py += cub3d->plr.diry * cub3d->plr.mv_spd;
 }
 
@@ -27,8 +27,7 @@ void	move_wu(t_cub3d *cub3d)
 int	redraw_screen(t_cub3d *cub3d)
 {
 	raycasting(cub3d);
-	mlx_put_image_to_window(cub3d->mlx, cub3d->win, \
-		(cub3d->scrn).img, 0, 0);
+	mlx_put_image_to_window(cub3d->mlx, cub3d->win, (cub3d->scrn).img, 0, 0);
 	return (0);
 }
 

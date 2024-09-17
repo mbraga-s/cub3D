@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: manumart <manumart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 21:48:37 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/12 22:28:36 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 15:51:54 by manumart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	lookforplr(t_cub3d *cub3d, int i, int j)
 {
 	char	*plr;
 	char	*plr_chars;
-	double	player;
 
 	plr_chars = "WNES";
 	plr = ft_strchr(plr_chars, cub3d->map.map[i][j]);
@@ -58,6 +57,6 @@ int	get_plr(t_cub3d *cub3d)
 	if (!found)
 		return (exit_error("Player not found"), 1);
 	else if (found > 1)
-		return (exit_error("Multiple plrs found"), 1);
+		return (exit_error("Multiple players found"), 1);
 	return (0);
 }

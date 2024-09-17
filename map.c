@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: manumart <manumart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 17:27:29 by manumart          #+#    #+#             */
-/*   Updated: 2024/09/08 20:13:40 by manumart         ###   ########.fr       */
+/*   Updated: 2024/09/15 10:47:43 by mbraga-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,7 @@ int	ft_parse_map(t_cub3d *cub3d)
 		while (cub3d->map.map[i][j])
 		{
 			if (!ft_strchr(chars, cub3d->map.map[i][j]))
-			{
-				printf("Invalid character found: %i at position [%d, %d]\n",
-					cub3d->map.map[i][j], i, j);
 				return (1);
-			}
 			j++;
 		}
 		i++;
@@ -62,46 +58,40 @@ int	ft_parse_map(t_cub3d *cub3d)
 	return (0);
 }
 
-int	ft_get_map(int fd, t_cub3d *cub3d)
+int	ft_get_map(int fd, char *line, t_cub3d *cub3d)
 {
-	char	*line;
-	int		i;
-	int		width;
+	int	i;
+	int	width;
 
 	width = 0;
 	i = 0;
 	cub3d->map.map = ft_calloc(2, sizeof(char *));
-	while (1)
+	while (line)
 	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
 		cub3d->map.map[i] = ft_strtrim(line, "\n");
 		if (ft_strlen(cub3d->map.map[i]) > width)
 			width = ft_strlen(cub3d->map.map[i]);
 		cub3d->map.map = ft_realloc(cub3d->map.map);
 		free(line);
+		line = get_next_line(fd);
 		i++;
 	}
-	free(line);
+	if (line)
+		free(line);
 	cub3d->height = i;
 	cub3d->width = width;
 	return (0);
 }
 
-int	ft_mapmain(int fd, t_cub3d *cub3d)
+int	ft_mapmain(int fd, char *line, t_cub3d *cub3d)
 {
 	cub3d->map.map = NULL;
 	cub3d->width = 0;
-	if (ft_get_map(fd, cub3d))
-	{
-		return (exit_error("no map found"), 1);
-		return (1);
-	}
+	if (ft_get_map(fd, line, cub3d))
+		return (exit_error("Map error."), 1);
 	if (ft_parse_map(cub3d))
 	{
-		return (exit_error("invalid characters in map"), 1);
+		return (1);
 	}
-	// printf("Map parsed\n");
 	return (0);
 }

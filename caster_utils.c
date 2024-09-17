@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   caster_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbraga-s <mbraga-s@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: manumart <manumart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 17:25:39 by mbraga-s          #+#    #+#             */
-/*   Updated: 2024/09/14 13:28:57 by mbraga-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:23:28 by manumart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-//Initializes some of the values in raydata struct.
+// Initializes some of the values in raydata struct.
 void	init_raydata(t_cub3d *cub3d, t_raydata *rd, int x)
 {
 	rd->camerax = 2 * x / (double)cub3d->wn_w - 1;
